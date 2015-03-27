@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Share My Food{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="/static/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="/static/css/flat-ui.css" rel="stylesheet">
+
+    {% block css %}{% endblock css %}
+
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/vendor/html5shiv.js"></script>
+      <script src="/static/js/vendor/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span c`ss="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Share My Food</a>
+        </div>
+        <div class="navbar-collapse collapse navbar-right">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'signup' %}" class="btn btn-default navbar-btn">Register</a>
+            <a href="{% url 'login' %}" class="btn btn-default navbar-btn">Login</a>
+        {% else %}
+            <a href="{% url 'profile' %}" class="btn btn-default navbar-btn">Profile</a>
+            <a href="{% url 'logout' %}" class="btn btn-default navbar-btn">Logout</a>
+        {% endif %}
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div class="jumbotron">
+        <div class="container">{% block headline %}{% endblock headline %}</div>
+    </div>
+
+    <div class="container">
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div{% if message.tags %} class="alert alert-{{ message.tags }}"
+
+                {% else %} class="alert alert-success"
+
+                {% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock content %}
+    </div>
+
+    <script src="/static/js/vendor/jquery.min.js"></script>
+    <script src="/static/js/flat-ui.min.js"></script>
+    {% block js %}{% endblock js %}
+</body>
+</html>
+
