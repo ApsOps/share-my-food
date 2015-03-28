@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Field
+from django import forms
+from .models import *
 
 
 class RegistrationForm(UserCreationForm):
@@ -31,20 +33,16 @@ class LoginForm(AuthenticationForm):
             )
         )
 
-'''
-class EntryForm(autocomplete_light.ModelForm):
+class EntryForm(forms.ModelForm):
     class Meta:
-        model = LawSchool
-        autocomplete_fields = ('city', 'country')
-        exclude = ('submitted_by',)
+        model = Food
+        exclude = ('owner',)
 
     def __init__(self, *args, **kwargs):
         super(EntryForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper(self)
-        self.helper.form_class = 'form-inline'
         self.helper.layout.append(ButtonHolder(
             Submit('save', 'Save', css_class='btn-primary btn-hg')
             )
         )
-'''

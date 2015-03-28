@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views import generic
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, EntryForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse_lazy
@@ -70,3 +70,30 @@ def update_location(request):
     messages = ["Your location has been saved!"]
     params = { "messages" : messages }
     return render(request, 'profile.html', params)
+
+
+class AddFoodView(views.LoginRequiredMixin, views.FormValidMessageMixin,
+               generic.CreateView):
+    form_class = EntryForm
+    form_valid_message = "Data added successfully."
+    model = Food
+    success_url = reverse_lazy('add')
+    template_name = "add/entry.html"
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super(AddFoodView, self).form_valid(form)
+
+
+def find_food(request):
+    user = UserModel.objects.get(pk=request.user.pk)
+    lng = user.longitude
+    lat = user.latitude 
+    foods = Food.objects.all()
+    users = []
+    for x in foods:
+        user1 = UserModel.objects.get(pk=x.owner.pk)
+        users.append(user1)
+    data = zip(foods, users)
+    params = {'lng': lng, 'lat': lat, 'data': data }
+    return render(request, 'find.html', params)

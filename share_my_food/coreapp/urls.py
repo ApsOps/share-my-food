@@ -7,6 +7,9 @@ urlpatterns = patterns('',
     url(r'^profile/$', ProfileView.as_view(), name='profile'),
     url(r'^updatelocation$', update_location, name='update_location'),
 
+    url(r'^add/$', AddFoodView.as_view(), name='add'),
+    url(r'^find/$', find_food, name='find'),
+
     url(r'^accounts/register/$', SignUpView.as_view(), name='signup'),
     url(r'^accounts/login/$', LoginView.as_view(), name='login'),
     url(r'^accounts/logout/$', LogOutView.as_view(), name='logout'),

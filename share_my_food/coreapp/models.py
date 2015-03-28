@@ -33,10 +33,10 @@ class Food(models.Model):
         verbose_name_plural = "Foods"
 
     def __str__(self):
-        pass
+        return "%s" % self.name
 
     name = models.CharField(max_length=100)
     description = models.TextField()
     serving_size = models.IntegerField()
-    deadline = models.DateTimeField()
-    owner = models.ForeignKey(UserModel)
+    expires_in = models.IntegerField(help_text="(Time in hours)")
+    owner = models.ForeignKey(User)
