@@ -109,7 +109,7 @@ def find_food(request):
         foods = Food.objects.all()
         users = []
         for x in foods:
-            user1 = UserModel.objects.get(pk=x.owner.pk)
+            user1 = UserModel.objects.get(user=x.owner)
             users.append(user1)
         data = zip(foods, users)
         params = {'lng': lng, 'lat': lat, 'data': data }
