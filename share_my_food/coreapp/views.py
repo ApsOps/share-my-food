@@ -63,13 +63,13 @@ def update_location(request):
     user = request.user
     lng = request.POST.get("lng", "")
     lat = request.POST.get("lat", "")
-    user_model = UserModel.objects.get(pk=user.pk)
+    user_model = UserModel.objects.get(user=user)
     user_model.longitude = lng
     user_model.latitude = lat
     user_model.save()
     messages = ["Your location has been saved!"]
     params = { "messages" : messages }
-    return render(request, 'location.html', params)
+    return render(request, 'home.html', params)
 
 
 class AddFoodView(views.LoginRequiredMixin, views.FormValidMessageMixin,
