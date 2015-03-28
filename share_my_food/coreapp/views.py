@@ -17,14 +17,14 @@ class HomePageView(generic.TemplateView):
     template_name = "home.html"
 
 
-class ProfileView(generic.TemplateView):
-    template_name = "profile.html"
+class LocationView(generic.TemplateView):
+    template_name = "location.html"
 
 
 class SignUpView(views.AnonymousRequiredMixin, views.FormValidMessageMixin,
                  generic.CreateView):
     form_class = RegistrationForm
-    form_valid_message = "Account created successfully! Go ahead and login."
+    form_valid_message = "Account created successfully. Please login and set your location first!"
     model = User
     success_url = reverse_lazy('login')
     template_name = 'accounts/signup.html'
@@ -69,7 +69,7 @@ def update_location(request):
     user_model.save()
     messages = ["Your location has been saved!"]
     params = { "messages" : messages }
-    return render(request, 'profile.html', params)
+    return render(request, 'location.html', params)
 
 
 class AddFoodView(views.LoginRequiredMixin, views.FormValidMessageMixin,
@@ -81,19 +81,36 @@ class AddFoodView(views.LoginRequiredMixin, views.FormValidMessageMixin,
     template_name = "add/entry.html"
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user
-        return super(AddFoodView, self).form_valid(form)
+        if UserModel.objects.get(user=self.request.user).longitude is None:
+            messages = ["You need to set your location first!"]
+            params = { "messages" : messages }
+            return render(self.request, 'location.html', params)
+        else:
+            form.instance.owner = self.request.user
+            return super(AddFoodView, self).form_valid(form)
+
+
+class FindFoodView(views.LoginRequiredMixin, views.MessageMixin,
+                 generic.RedirectView):
+
+    def get(self, request, *args, **kwargs):
+        return find_food(request)
 
 
 def find_food(request):
-    user = UserModel.objects.get(pk=request.user.pk)
-    lng = user.longitude
-    lat = user.latitude 
-    foods = Food.objects.all()
-    users = []
-    for x in foods:
-        user1 = UserModel.objects.get(pk=x.owner.pk)
-        users.append(user1)
-    data = zip(foods, users)
-    params = {'lng': lng, 'lat': lat, 'data': data }
-    return render(request, 'find.html', params)
+    user = UserModel.objects.get(user=request.user)
+    if user.longitude is None:
+        messages = ["You need to set your location first!"]
+        params = { "messages" : messages }
+        return render(request, 'location.html', params)
+    else:
+        lng = user.longitude
+        lat = user.latitude 
+        foods = Food.objects.all()
+        users = []
+        for x in foods:
+            user1 = UserModel.objects.get(pk=x.owner.pk)
+            users.append(user1)
+        data = zip(foods, users)
+        params = {'lng': lng, 'lat': lat, 'data': data }
+        return render(request, 'find.html', params)
