@@ -1,21 +1,58 @@
 {% extends '_layouts/base.html' %}
 
+{% block css %}
+<style type="text/css">
+    #bg {
+        background: url('/static/img/bg.jpg') fixed center center;
+        background-size: cover;
+        height: 100vh;
+        width: 100%;
+    }
+
+    .dummy {
+        visibility: hidden !important;
+    }
+
+    #top {
+        margin-top: -500px;
+    }
+
+    #main {
+        margin-top: 400px;
+    }
+    #logo {
+        background-color: rgba(255,255,255,0.7);
+        border-radius: 10px;
+    }
+
+    #hungry,#cooked {
+        margin-top: 50px;
+    }
+</style>
+{% endblock css %}
+
+{% block bg %}
+    <div id="bg">
+        <img class="dummy" src="/static/img/bg.jpg"></img>
+    </div>
+{% endblock bg %}
+
 {% block content %}
 
 <div id="top" class="row">
-    <div class="span6"><img src="/static/img/logo.png" alt="LOGO" /></div>
-    <div class="span4">
-    <a href="/find" class="btn-large btn-danger" id="hungry" >I'm Hungry</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/add" class="btn-large btn-danger">I Cooked</a></div>
-    </div>
-    <br />
-    <div id="main">
-    <h3>This is a platform to help in reducing food wastage and providing food to those who need. It will also cater to needs of people who want to taste different home cooked foods and those who like cooking.</h3><br />
-    <h4>This is for use by many different but not limited to following groups of people:</h4>
+    <div class="col-md-6"><img id="logo" src="/static/img/logo.png" alt="LOGO" /></div>
+    <div class="col-md-3"><a href="/find" class="btn btn-hg btn-danger" id="hungry" >I'm Hungry</a></div>
+    <div class="col-md-3"><a href="/add" class="btn btn-hg btn-danger" id="cooked">I Cooked</a></div>
+</div>
+<div id="main" class="row">
+    <h3>Share My Food helps in reducing food wastage by providing food to those who need.</h3>
+    <h3>It also caters to needs of people who want to taste different home cooked foods and those who like cooking.</h3>
+    <h4>We are the perfect place for the following groups of people:</h4>
     <ul type="disc">
     <li>Families who want to reduce food wastage</li>
-    <li>NGOs which help poor and needy for food</li>
+    <li>NGOs that help poor and needy for food</li>
     <li>People who can't cook food themselves</li>
-    <li>People who want to eat home cooked food only</li>
+    <li>People who want to eat home cooked food</li>
     <li>People who want to taste different types of foods</li>
     <li>People who like cooking</li>
     </ul>

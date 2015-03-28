@@ -12,6 +12,14 @@
     <link href="/static/css/flat-ui.css" rel="stylesheet">
 
     {% block css %}{% endblock css %}
+    <style type="text/css">
+        .messages {
+            position: absolute;
+        }
+        .mt-50 {
+            margin-top: 50px;
+        }
+    </style>
 
     <link rel="shortcut icon" href="/static/img/favicon.ico">
 
@@ -31,26 +39,23 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Share My Food</a>
+          <a class="navbar-brand" href="/">Share My Food <span class="fui-heart"></span></a>
         </div>
         <div class="navbar-collapse collapse navbar-right">
         {% if not user.is_authenticated %}
-            <a href="{% url 'signup' %}" class="btn btn-default navbar-btn">Register</a>
-            <a href="{% url 'login' %}" class="btn btn-default navbar-btn">Login</a>
+            <a href="{% url 'signup' %}" class="btn btn-default navbar-btn">Register <span class="fui-user"></span></a>
+            <a href="{% url 'login' %}" class="btn btn-default navbar-btn">Login <span class="fui-power"></span></a>
         {% else %}
-            <a href="{% url 'location' %}" class="btn btn-default navbar-btn">Location</a>
-            <a href="{% url 'logout' %}" class="btn btn-default navbar-btn">Logout</a>
+            <a href="{% url 'location' %}" class="btn btn-default navbar-btn">Location <span class="fui-location"></span></a>
+            <a href="{% url 'logout' %}" class="btn btn-default navbar-btn">Logout <span class="fui-power"></span></a>
         {% endif %}
         </div><!--/.navbar-collapse -->
       </div>
     </div>
 
-    <div class="jumbotron">
-        <div class="container">{% block headline %}{% endblock headline %}</div>
-    </div>
+    <div class="container mt-50">{% block headline %}{% endblock headline %}</div>
 
     <div class="container">
-
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -60,8 +65,13 @@
 
                 {% endif %}>{{ message }}</div>
             {% endfor %}
-        </div>
+            </div>
         {% endif %}
+    </div>
+
+    {% block bg %}{% endblock bg %}
+
+    <div class="container">
 
         {% block content %}{% endblock content %}
     </div>
